@@ -1,0 +1,188 @@
+
+ <!DOCTYPE html>
+
+ <html lang="en">
+ 
+ <head>
+    {% load static %}
+     <meta charset="utf-8" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+     <title>All submission deadlines</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+     {% include "../library.html" %}
+     <style>
+         td, b, i{
+             font-size: 16px;
+         }
+     </style>
+ </head>
+ 
+ <body>
+     <div class="wrapper">
+         <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../QAmenu_left.html" %}
+         </div>
+         <div class="main-panel">
+             <div class="content">
+                 <div class="container-fluid">
+                     <div class="row">
+                        <div class="col-md-12" style="text-align: right;">
+                            {% if contribution.UserID.id  == user.id %}
+                            {% if is_final_Closure_date == True %}
+                            <a href="/staff/deleteFile/{{contribution.id}}/" class="btn btn-danger" style="background-color: tomato; color: white; font-size: 16px;">Delete</a>
+                            <a href="/staff/editFile/{{contribution.id}}/" class="btn btn-danger" style="background-color: tomato; color: white; font-size: 16px;">Edit</a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                         <div class="col-md-12" style="margin-top: 10px;">
+                             <div class="card  card-tasks">
+                                 <div class="card-header ">
+                                     <h4 class="card-title">All submission deadlines</h4>
+                                     <!-- <p class="card-category">Backend development</p> -->
+                                 </div>
+                                 <div class="card-body ">
+                                     <div class="table-full-width">
+                                         <table class="table table-bordered">
+                                             <tbody>
+                                                <tr>
+                                                    <td><a href="#">Author</a></td>
+                                                    <td>
+                                                        {% if contribution.Incognito == True %}
+                                                            Author's name is incognito mode
+                                                        {% endif %}
+                                                        {% if contribution.Incognito == False %}
+                                                           {{user.username}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                     <td><a href="#">Name submission</a></td>
+                                                     <td>{{contribution.Name}}</td>
+                                                 </tr>
+                                                 <tr>
+                                                    <td><a href="#">Type</a></td>
+                                                    <td>{{contribution.TypeID}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><a href="#">Due date</a></td>
+                                                    <td>{{term.Closure_date}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a href="#">Create at</a></td>
+                                                    <td>{{contribution.Create_at}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a href="#">Select mode</a></td>
+                                                    <td>
+                                                        {% if contribution.Incognito == True %}
+                                                        Incognito
+                                                        {% endif %}
+                                                        {% if contribution.Incognito == False %}
+                                                        Not incognito
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a href="#">Total like</a></td>
+                                                    <td id="totalLike">{{contribution.Total_likes}}</td>
+                                                </tr>
+                                             </tbody>
+                                         </table>
+                                         {% if is_Closure_date == True %}
+                                        <div style="width: 100%; text-align: center;">
+                                            <a href="/staff/downloadZip/{{contribution.id}}/" style="margin-left: 20px;"><i class="fa fa-cloud-download" style="font-size:80px"></i></a>
+                                        </div>
+                                        {% endif %}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-md-12">
+
+                            <span class="glyphicon glyphicon-thumbs-up"
+                                style="font-size:24px; color: #2980b9; cursor: pointer;" onclick="like()"
+                                id="like"></span>
+                            <span class="glyphicon glyphicon-thumbs-down"
+                                style="font-size:24px; color: #2980b9; cursor: pointer; margin-left: 10px;"
+                                onclick="disLike()" id="disLike"></span>
+
+
+                        </div>
+                         <script>
+                            var islike = {{ like }}
+                            console.log(islike)
+                            async function like() {
+                                if (islike == 0) {
+                                    console.log(islike)
+                                    const response = await fetch('/staff/like/{{contribution.id}}/');
+                                    if (response.status == 200) {
+                                        {
+                                            document.getElementById("totalLike").innerHTML = parseInt($("#totalLike").text()) + 1
+                                            islike++
+                                        }
+                                    }
+                                }
+                            }
+                            async function disLike() {
+                                if (islike > 0) {
+                                    console.log(islike)
+                                    const response = await fetch('/staff/unLike/{{contribution.id}}/');
+                                    if (response.status == 200) {
+                                        document.getElementById("totalLike").innerHTML = parseInt($("#totalLike").text()) - 1
+                                        islike--
+                                    }
+                                }
+                            }
+                        </script>
+                         <div class="col-md-12" style="margin-top: 10px;">
+                             <p>Comment</p>
+                             {% if is_final_Closure_date == True %}
+                            <form action="/QAManager/comment/{{contribution.id}}/" method="POST">
+                                {% csrf_token %}
+                                <textarea name="comment" id="" cols="10" rows="3" class="form-control" style="font-size: 16px;" required></textarea>
+                                <select name="incognito" style="font-size: 16px;">
+                                    <option value="incognito">Incognito</option>
+                                    <option value="saab">Not incognito</option>
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 10px; font-size: 16px;">Send</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                         <div class="col-md-12">
+                             <div class="row">
+                                {% for i in comment %}
+                                <div class="col-12" style="background-color: #ecf0f1; border-radius: 15px; margin-top: 10px;">
+                                    {% if i.Incognito == False %}
+                                        <b>{{i.UserID}}</b>
+                                    {% endif %}
+                                    {% if i.Incognito == True %}
+                                        <b>Incognito</b>
+                                    {% endif %}
+                                    <br>
+                                    <i>{{i.Create_at}}</i>
+                                    <p>{{i.Comment}}</p>
+                                </div>
+                                {% endfor %}
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             {% include "../footer.html" %}
+         </div>
+     </div>
+ </body>
+
+ <script type="text/javascript">
+     $(document).ready(function() {
+         demo.initDashboardPageCharts();
+ 
+         demo.showNotification();
+ 
+     });
+ </script>
+ 
+ </html>
+ 

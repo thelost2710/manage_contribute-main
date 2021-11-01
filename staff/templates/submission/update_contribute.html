@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>All submission deadlines</title>
+    {% include "../library.html" %}
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../menu_left.html" %}
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card  card-tasks">
+                                <div class="card-header ">
+                                    <h4 class="card-title">All submission deadlines</h4>
+                                    <!-- <p class="card-category">Backend development</p> -->
+                                </div>
+                                <form action="/staff/UpdateFile/{{term.id}}/{{contribution.id}}/" method="POST"  enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="card-body ">
+                                        <div class="table-full-width">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Name submission</a></td>
+                                                        <td><input type="text" class="form-control" name="name" required value="contribution.Name"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Due date</a></td>
+                                                        <td>{{term.Closure_date}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Type</a></td>
+                                                        <td> 
+                                                            <select name="type">
+                                                                {% for i in typeC %}
+                                                                <option value="{{i.id}}">{{i.Name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Select mode</a></td>
+                                                        <td> 
+                                                            <select name="incognito">
+                                                                <option value="incognito">Incognito</option>
+                                                                <option value="saab">Not incognito</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Description</a></td>
+                                                        <td> <textarea name="description" id="" cols="10" rows="3" class="form-control">{{contribution.Description}}</textarea></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <input type="file" required id="uploadContribute" name="contribute" accept=".doc,.docx,.pdf,application/msword">
+                                            <div style="width: 100%; text-align: center;">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                    Update file
+                                                  </button>
+                                            </div>
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <h5 class="modal-title" id="exampleModalLabel">Notify</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Before submitting, you must agree to the following terms
+                                                       <ul>
+                                                           <li>You must pledge that this is your own work</li>
+                                                           <li>...</li>
+                                                       </ul>
+                                                    </div>
+                                                    <div style="width: 100%; text-align: right; margin-bottom: 10px;">
+                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                                      <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Yes</button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include "../footer.html" %}
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+        demo.showNotification();
+
+    });
+</script>
+
+</html>

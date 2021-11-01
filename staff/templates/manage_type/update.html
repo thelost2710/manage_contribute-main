@@ -1,0 +1,76 @@
+
+ <!DOCTYPE html>
+
+ <html lang="en">
+ 
+ <head>
+    {% load static %}
+     <meta charset="utf-8" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+     <title>All submission deadlines</title>
+     {% include "../library.html" %}
+ </head>
+ 
+ <body>
+     <div class="wrapper">
+         <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../QAmenu_left.html" %}
+         </div>
+         <div class="main-panel">
+             <div class="content">
+                 <div class="container-fluid">
+                     <div class="row">
+                         <div class="col-12" style="text-align: center;">
+                            <h3>Details of contribution categories</h3>
+                         </div>
+                         <div class="col-12" style="text-align: right;">
+                            <a class="btn btn-default" style="background-color: #e74c3c; color: white; border-color: white;" href="/QAManager/deleteType/{{typeContribute.id}}">Delete</a>
+                         </div>
+                         <div class="col-md-12">
+                            <form action="/QAManager/updateType/{{typeContribute.id}}" method="POST">
+                                {% csrf_token %}
+                                <label>Name</label>
+                                <input class="form-control" name="Name"  value = "{{typeContribute.Name}}">
+                                <label>Description</label>
+                                <textarea name="Description" class="form-control" rows="10">{{typeContribute.Description}}</textarea>
+                                <div style="width: 100%; text-align: center; margin-top: 10px;">
+                                    <button type="submit" class="btn btn-default" style="background-color: #3498db; color: white; border-color: white;">Update</button>
+                                </div>
+                            </form>
+                        
+                         </div>
+                         <div class="col-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center" id="pageNumber">
+                                </ul>
+                              </nav>
+                         </div>
+                         <script>
+                             
+                             var pageNumber = {{numberPage}}
+                             if(pageNumber > 1){
+                                 for(var i = 1; i <= pageNumber; i++){
+                                    $("#pageNumber").append("<li class='page-item'><a class='page-link' href='/staff/submission/"+ i +"/'>" + i +"</a></li>");
+                                 }
+                             }
+                         </script>
+                     </div>
+                 </div>
+             </div>
+             {% include "../footer.html" %}
+         </div>
+     </div>
+ </body>
+
+ <script type="text/javascript">
+     $(document).ready(function() {
+         // Javascript method's body can be found in assets/js/demos.js
+         demo.initDashboardPageCharts();
+ 
+         demo.showNotification();
+ 
+     });
+ </script>
+ 
+ </html>
+ 

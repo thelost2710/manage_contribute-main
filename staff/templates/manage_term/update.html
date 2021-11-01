@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>All submission deadlines</title>
+    {% include "../library.html" %}
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../QAmenu_left.html" %}
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12" style="text-align: center;">
+                            <h3>Detailed deadlines</h3>
+                        </div>
+                        <div class="col-12" style="text-align: right;">
+                            <a class="btn btn-default"
+                                style="background-color: #e74c3c; color: white; border-color: white;"
+                                onclick="Delete({{term.id}})">Delete</a>
+                        </div>
+                        <script>
+                            async function Delete(id) {
+                                const response = await fetch('/QAManager/checkContribute/' + id + '/');
+                                response.text().then(function (text) {
+                                    console.log(text)
+                                    if (text == "Yes") {
+                                        if (confirm("There are many contributions in this tern, do you want to delete them all?")) {
+                                            location.href="/QAManager/deleteTerm/{{term.id}}"
+                                        } 
+                                    }
+                                    else{
+                                        location.href="/QAManager/deleteTerm/{{term.id}}"
+                                    }
+                                })
+                            }
+                        </script>
+                        <div class="col-md-12">
+                            <form action="/QAManager/updateTerm/{{term.id}}" method="POST">
+                                {% csrf_token %}
+                                <label>Name</label>
+                                <input class="form-control" name="Name" value="{{term.Name}}">
+                                <hr style="width: 100%;">
+                                <label>Current closing date</label>
+                                <br>
+                                <input type="text" value="{{term.Closure_date}}" class="col-md-3 col-12" readonly>
+                                <br>
+                                <label>Closure date</label>
+                                <br>
+                                <input type="datetime-local" value="{{term.Closure_date}}" class="col-md-3 col-12"
+                                    name="closureDate" required>
+                                <br>
+                                <hr style="width: 100%;">
+                                <label>Current final closure date</label>
+                                <br>
+                                <input type="text" value="{{term.Closure_date}}" class="col-md-3 col-12" readonly>
+                                <br>
+                                <label>Final closure date</label>
+                                <br>
+                                <input type="datetime-local" value="{{term.Closure_date}}" class="col-md-3 col-12"
+                                    name="finalClosureDate" required>
+                                <br>
+                                <hr style="width: 100%;">
+                                <textarea name="description" class="form-control"
+                                    rows="5">{{term.Description}}</textarea>
+                                <div style="width: 100%; text-align: center; margin-top: 10px;">
+                                    <button type="submit" class="btn btn-default"
+                                        style="background-color: #3498db; color: white; border-color: white;">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center" id="pageNumber">
+                                </ul>
+                            </nav>
+                        </div>
+                        <script>
+                            var pageNumber = {{ numberPage }}
+                            if (pageNumber > 1) {
+                                for (var i = 1; i <= pageNumber; i++) {
+                                    $("#pageNumber").append("<li class='page-item'><a class='page-link' href='/staff/submission/" + i + "/'>" + i + "</a></li>");
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            {% include "../footer.html" %}
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+        demo.showNotification();
+
+    });
+</script>
+
+</html>

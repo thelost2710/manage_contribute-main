@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>All submission deadlines</title>
+    {% include "../library.html" %}
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../menu_left.html" %}
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card  card-tasks">
+                                <div class="card-header ">
+                                    <h4 class="card-title">All submission deadlines</h4>
+                                    <!-- <p class="card-category">Backend development</p> -->
+                                </div>
+                                <div class="card-body ">
+                                    <div class="table-full-width">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr style="">
+                                                    <th>Name</th>
+                                                    <th>Closure Date</th>
+                                                    <th>Final closure date</th>
+                                                    <td>Status</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in Term %}
+                                                <tr>
+                                                    <td><a href="/staff/upload/{{i.id}}/">{{i.Name}}</a></td>
+                                                    <td>{{i.Closure_date|date:"Y/m/d h:s"}}</td>
+                                                    <td>{{i.Final_Closure_date|date:"Y/m/d h:s"}}</td>
+                                                    <td id="c{{i.id}}"></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <script>
+                                            var today = new Date();
+                                            var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+                                            var time = today.getHours() + ":" + today.getMinutes()
+                                            var dateTime = date + ' ' + time;
+                                            {% for i in Term %}
+                                            if(Date.parse("{{i.Closure_date|date:"Y/m/d h:s"}}") < Date.parse(dateTime))
+                                            {
+                                                $("#c{{i.id}}").html("<p style='background-color: red; color: white; text-align:center;'>End</p>");
+                                                console.log(2)
+                                            }
+                                            if(Date.parse("{{i.Closure_date|date:"Y/m/d h:s"}}") > Date.parse(dateTime))
+                                            {
+                                                $("#c{{i.id}}").html("<p style='background-color: orange; color: white; text-align:center;'>Pending</p>");
+                                                console.log(3)
+                                            }
+                                            {% endfor %}
+
+                                            {% for i in contribute %}
+                                            $("#c{{i.TermID.id}}").html("<p style='background-color: green; color: white; text-align:center;'>Complete</p>");
+                                            {% endfor %}
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include "../footer.html" %}
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+        demo.showNotification();
+
+    });
+</script>
+
+</html>

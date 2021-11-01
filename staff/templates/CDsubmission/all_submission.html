@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>All submission deadlines</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% include "../library.html" %}
+    <style>
+        td {
+            font-size: 16px;
+        }
+
+        .page-link {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+            {% include "../CDmenu_left.html" %}
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                        </div>
+                        <div class="col-md-4 col-12">
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="row">
+                                <div class="col-md-6" style="text-align: right;">
+                                    <p style="margin-top: 15px;">Filter by</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-control form-control-sm" style="font-size: 16px;"
+                                        onchange="filterBy(this.value);">
+                                        <option></option>
+                                        <option value="">All</option>
+                                        <option value="Latest">Latest</option>
+                                        <option value="MostPopular">Most prominent</option>
+                                    </select>
+                                    <script>
+                                        function filterBy(url) {
+                                            if(url == ""){
+                                                location.href = "/QACoordinator/1/";
+                                            }
+                                            else{
+                                                location.href = "/QACoordinator/" + url + "/" + 1;
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-header ">
+                                    <h4 class="card-title">All submission</h4>
+                                </div>
+                                <div class="card-body table-full-width table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Submission date</th>
+                                            <th>Total likes</th>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in contributes %}
+                                            <tr>
+                                                <td><a href="/QACoordinator/detail_submission/{{i.3}}/">{{i.0}}</a></td>
+                                                <td>{{i.1}}</td>
+                                                <td>{{i.2}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center" id="pageNumber">
+                                </ul>
+                            </nav>
+                        </div>
+                        <script>
+                            var url = String(window.location)
+                            var path = url.split("/")
+                            var pageNumber = {{ numberPage }}
+                            if (pageNumber > 1) {
+                                for (var i = 1; i <= pageNumber; i++) {
+                                    console.log(i)
+                                    $("#pageNumber").append("<li class='page-item'><a class='page-link' href='/QACoordinator/"+path[4]+"/" + i +"'>" + i +"</a ></li > ");
+                                 }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            {% include "../footer.html" %}
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+        demo.showNotification();
+
+    });
+</script>
+
+</html>
