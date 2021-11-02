@@ -22,7 +22,7 @@
                         <div class="col-md-12">
                             <div class="card  card-tasks">
                                 <div class="card-header ">
-                                    <h4 class="card-title">All submission deadlines</h4>
+                                    <h4 class="card-title">Submission deadlines</h4>
                                     <!-- <p class="card-category">Backend development</p> -->
                                 </div>
                                 <div class="card-body ">
@@ -55,18 +55,18 @@
                                             {% for i in Term %}
                                             if(Date.parse("{{i.Closure_date|date:"Y/m/d h:s"}}") < Date.parse(dateTime))
                                             {
-                                                $("#c{{i.id}}").html("<p style='background-color: red; color: white; text-align:center;'>End</p>");
+                                                $("#c{{i.id}}").html("<p style='background-color: red; color: white; text-align:center;'>Closed</p>");
                                                 console.log(2)
                                             }
                                             if(Date.parse("{{i.Closure_date|date:"Y/m/d h:s"}}") > Date.parse(dateTime))
                                             {
-                                                $("#c{{i.id}}").html("<p style='background-color: orange; color: white; text-align:center;'>Pending</p>");
+                                                $("#c{{i.id}}").html("<p style='background-color: orange; color: white; text-align:center;'>Waiting for submit</p>");
                                                 console.log(3)
                                             }
                                             {% endfor %}
 
                                             {% for i in contribute %}
-                                            $("#c{{i.TermID.id}}").html("<p style='background-color: green; color: white; text-align:center;'>Complete</p>");
+                                            $("#c{{i.TermID.id}}").html("<p style='background-color: green; color: white; text-align:center;'>Submitted</p>");
                                             {% endfor %}
                                         </script>
                                     </div>
